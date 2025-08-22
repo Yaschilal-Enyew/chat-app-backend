@@ -44,7 +44,23 @@ io.on("connection", (socket)=>{
 // middleware setup
 app.use(express.json({limit: "4mb"}));
 app.use(cookieParser());
-app.use(cors({ origin:'https://aura-chat-fro.vercel.app', credentials:true }));
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://aura-chat-fro.vercel.app'
+];
+
+app.use(cors({
+  origin: function(origin, callback){
+    if(!origin) return callback(null, true); // allow non-browser requests like Postman
+    if(allowedOrigins.includes(origin)){
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true
+}));
+
 
 // Routes setup
 app.use("/api/status",(req,res)=> res.send("Server is live"));
@@ -58,3 +74,4 @@ server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 
 });
+
