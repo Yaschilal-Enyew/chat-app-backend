@@ -15,7 +15,7 @@ const server = http.createServer(app);
 
 // Initialize socket.io server
 export const io = new Server(server, {
-  cors: {origin: "*"}
+  cors: {origin: "https://aura-chat-fro.vercel.app"}
 })
 
 // Store online users
@@ -44,7 +44,7 @@ io.on("connection", (socket)=>{
 // middleware setup
 app.use(express.json({limit: "4mb"}));
 app.use(cookieParser());
-app.use(cors({ origin:'http://localhost:5173', credentials:true }));
+app.use(cors({ origin:'https://aura-chat-fro.vercel.app', credentials:true }));
 
 // Routes setup
 app.use("/api/status",(req,res)=> res.send("Server is live"));
@@ -56,4 +56,5 @@ const PORT = process.env.PORT;
 server.listen(PORT, () => {
   connectDB();
   console.log(`Server running on port ${PORT}`);
+
 });
